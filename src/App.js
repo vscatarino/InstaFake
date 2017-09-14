@@ -1,17 +1,23 @@
 import React, { Component } from 'react';
 import Header from './componentes/Header';
 import Timeline from './componentes/TimeLine';
-import TimelineStore from './logicas/TimelineStore';
+import  {timeline} from './reducers/timeline';
+import {createStore, applyMiddleware,combineReducers} from 'redux';
+import thunkMiddleware from 'redux-thunk';
+import {alerta} from './reducers/header';  
 
-const timelineStore = new TimelineStore([]);
+
+
+const reducers = combineReducers({timeline, alerta}); 
+const store = createStore(reducers, applyMiddleware(thunkMiddleware));
 
 class App extends Component { 
   render() {
     return (
       <div id="root">
       <div className="main">        
-       <Header/>
-       <Timeline login={this.props.params.login} store={timelineStore}/>
+       <Header store={store}/>
+       <Timeline login={this.props.params.login} store={store}/>
       </div>
     </div>
     );
